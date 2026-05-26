@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web制作 ヒアリングシート</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .pill-radio input[type="radio"],
+    .pill-check input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .pill-radio label,
+    .pill-check label {
+      display: inline-flex; align-items: center; cursor: pointer;
+      border: 1.5px solid #d1d5db; border-radius: 9999px;
+      padding: 6px 16px; font-size: 0.875rem; transition: all .15s;
+      user-select: none; white-space: nowrap;
+    }
+    .pill-radio input:checked + label,
+    .pill-check input:checked + label {
+      background: #2563eb; border-color: #2563eb; color: #fff;
+    }
+    .pill-radio label:hover,
+    .pill-check label:hover { border-color: #2563eb; color: #2563eb; }
+    .pill-radio input:checked + label:hover,
+    .pill-check input:checked + label:hover { color: #fff; }
+    .field-error { display: none; color: #dc2626; font-size: 0.75rem; margin-top: 4px; }
+    .field-error.show { display: block; }
+    input.error, textarea.error, select.error { border-color: #dc2626 !important; }
+    .group-error { display: none; color: #dc2626; font-size: 0.75rem; margin-top: 4px; }
+    .group-error.show { display: block; }
+    .fade-in { animation: fadeIn .3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- ヘッダー進捗バー -->
+  <div class="sticky top-0 z-10 bg-white shadow-sm">
+    <div class="max-w-2xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between mb-2">
+        <p class="text-sm font-medium text-gray-700" id="step-label">ステップ 1 / 10：基本情報</p>
+        <p class="text-sm text-gray-400" id="step-pct">10%</p>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full h-1.5">
+        <div id="progress-bar" class="bg-blue-600 h-1.5 rounded-full transition-all duration-300" style="width: 10%"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-2xl mx-auto px-4 py-8">
+    <div class="mb-6 text-center">
+      <h1 class="text-2xl font-bold text-gray-900">Web制作 ヒアリングシート</h1>
+      <p class="text-gray-500 text-sm mt-1">すべての情報は安全に保管されます</p>
+    </div>
+
+    <form id="intake-form" novalidate>
+
+      <!-- ========== STEP 1: 基本情報 ========== -->
+      <div class="section fade-in" data-step="1">
+        <div class="bg-white rounded-2xl shadow-sm p-6 space-y-5">
+          <h2 class="text-lg font-bold text-gray-900 border-b pb-3">1. 基本情報</h2>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">会社名 <span class="text-red-500">*</span></label>
+            <input type="text" name="company_name" required placeholder="例：株式会社サンプル"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <p class="field-error">会社名を入力してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">事業内容 <span class="text-red-500">*</span></label>
+            <textarea name="business_description" required rows="2" placeholder="例：不動産の売買・賃貸仲介サービス"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"></textarea>
+            <p class="field-error">事業内容を入力してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">業種 <span class="text-red-500">*</span></label>
+            <div class="flex flex-wrap gap-2 pill-radio" data-required-group="industry">
+              <span><input type="radio" name="industry" id="ind_it" value="IT"><label for="ind_it">IT</label></span>
+              <span><input type="radio" name="industry" id="ind_mfg" value="製造"><label for="ind_mfg">製造</label></span>
+              <span><input type="radio" name="industry" id="ind_retail" value="小売"><label for="ind_retail">小売</label></span>
+              <span><input type="radio" name="industry" id="ind_food" value="飲食"><label for="ind_food">飲食</label></span>
+              <span><input type="radio" name="industry" id="ind_med" value="医療"><label for="ind_med">医療</label></span>
+              <span><input type="radio" name="industry" id="ind_re" value="不動産"><label for="ind_re">不動産</label></span>
+              <span><input type="radio" name="industry" id="ind_edu" value="教育"><label for="ind_edu">教育</label></span>
+              <span><input type="radio" name="industry" id="ind_other" value="その他"><label for="ind_other">その他</label></span>
+            </div>
+            <p class="group-error">業種を選択してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">担当者名 <span class="text-red-500">*</span></label>
+            <input type="text" name="contact_name" required placeholder="例：山田 太郎"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <p class="field-error">担当者名を入力してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">担当者の役職 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="contact_title" placeholder="例：マーケティング部長"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">担当者のメールアドレス <span class="text-red-500">*</span></label>
+            <input type="email" name="contact_email" required placeholder="例：yamada@example.com"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <p class="field-error">有効なメールアドレスを入力してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">担当者の電話番号 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="tel" name="contact_phone" placeholder="例：090-1234-5678"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">決裁者名 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="decision_maker_name" placeholder="例：鈴木 一郎"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">決裁者の役職 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="decision_maker_title" placeholder="例：代表取締役"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">窓口担当者名（担当者と異なる場合） <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="window_contact_name" placeholder="例：佐藤 花子"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">既存サイトのURL <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="url" name="existing_site_url" placeholder="https://example.com"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div class="grid grid-cols-1 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">SNS（Twitter/X） <span class="text-gray-400 text-xs">任意</span></label>
+              <input type="url" name="sns_twitter" placeholder="https://twitter.com/..."
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">SNS（Instagram） <span class="text-gray-400 text-xs">任意</span></label>
+              <input type="url" name="sns_instagram" placeholder="https://instagram.com/..."
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">SNS（Facebook） <span class="text-gray-400 text-xs">任意</span></label>
+              <input type="url" name="sns_facebook" placeholder="https://facebook.com/..."
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">SNS（その他） <span class="text-gray-400 text-xs">任意</span></label>
+              <input type="text" name="sns_other" placeholder="LINE公式アカウントなど"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== STEP 2: プロジェクトの目的・ゴール ========== -->
+      <div class="section fade-in hidden" data-step="2">
+        <div class="bg-white rounded-2xl shadow-sm p-6 space-y-5">
+          <h2 class="text-lg font-bold text-gray-900 border-b pb-3">2. プロジェクトの目的・ゴール</h2>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">制作・リニューアルの背景・きっかけ <span class="text-red-500">*</span></label>
+            <textarea name="background" required rows="3" placeholder="例：既存サイトが古くスマートフォン対応されていないため"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"></textarea>
+            <p class="field-error">背景・きっかけを入力してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">サイトで達成したい目的 <span class="text-red-500">*</span>（複数選択可）</label>
+            <div class="flex flex-wrap gap-2 pill-check" data-required-group="site_purpose">
+              <span><input type="checkbox" name="site_purpose" id="sp_1" value="集客"><label for="sp_1">集客</label></span>
+              <span><input type="checkbox" name="site_purpose" id="sp_2" value="採用"><label for="sp_2">採用</label></span>
+              <span><input type="checkbox" name="site_purpose" id="sp_3" value="ブランディング"><label for="sp_3">ブランディング</label></span>
+              <span><input type="checkbox" name="site_purpose" id="sp_4" value="販売"><label for="sp_4">販売</label></span>
+              <span><input type="checkbox" name="site_purpose" id="sp_5" value="その他"><label for="sp_5">その他</label></span>
+            </div>
+            <p class="group-error">目的を1つ以上選択してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">解決したい現状の課題 <span class="text-red-500">*</span></label>
+            <textarea name="challenges" required rows="3" placeholder="例：問い合わせ数が少ない、採用応募が来ない、ブランドイメージが伝わっていない"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"></textarea>
+            <p class="field-error">現状の課題を入力してください</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">目標の問い合わせ件数 <span class="text-gray-400 text-xs">任意</span></label>
+              <input type="text" name="kpi_contacts" placeholder="例：月20件"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">目標のCVR <span class="text-gray-400 text-xs">任意</span></label>
+              <input type="text" name="kpi_cvr" placeholder="例：3%"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">目標のPV数 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="kpi_pv" placeholder="例：月5,000PV"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">その他KPI・成果指標 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="kpi_other" placeholder="例：SNSフォロワー数、資料ダウンロード数"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== STEP 3: ターゲット ========== -->
+      <div class="section fade-in hidden" data-step="3">
+        <div class="bg-white rounded-2xl shadow-sm p-6 space-y-5">
+          <h2 class="text-lg font-bold text-gray-900 border-b pb-3">3. ターゲット</h2>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">メインターゲットの年齢層 <span class="text-red-500">*</span></label>
+            <div class="flex flex-wrap gap-2 pill-radio" data-required-group="target_age">
+              <span><input type="radio" name="target_age" id="age_teen" value="10代"><label for="age_teen">10代</label></span>
+              <span><input type="radio" name="target_age" id="age_20" value="20代"><label for="age_20">20代</label></span>
+              <span><input type="radio" name="target_age" id="age_30" value="30代"><label for="age_30">30代</label></span>
+              <span><input type="radio" name="target_age" id="age_40" value="40代"><label for="age_40">40代</label></span>
+              <span><input type="radio" name="target_age" id="age_50" value="50代以上"><label for="age_50">50代以上</label></span>
+              <span><input type="radio" name="target_age" id="age_all" value="全年齢"><label for="age_all">全年齢</label></span>
+            </div>
+            <p class="group-error">年齢層を選択してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">メインターゲットの性別 <span class="text-gray-400 text-xs">任意</span></label>
+            <div class="flex flex-wrap gap-2 pill-radio">
+              <span><input type="radio" name="target_gender" id="gen_m" value="男性"><label for="gen_m">男性</label></span>
+              <span><input type="radio" name="target_gender" id="gen_f" value="女性"><label for="gen_f">女性</label></span>
+              <span><input type="radio" name="target_gender" id="gen_any" value="問わない"><label for="gen_any">問わない</label></span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">メインターゲットの職業 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="target_occupation" placeholder="例：中小企業の経営者・会社員"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">メインターゲットの地域 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="target_region" placeholder="例：関東圏、全国"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">サブターゲット <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="sub_target" placeholder="例：主婦層、シニア層"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">ターゲットの抱える悩み・ニーズ <span class="text-red-500">*</span></label>
+            <textarea name="target_needs" required rows="3" placeholder="例：コスト削減したい、信頼できる業者を探している"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"></textarea>
+            <p class="field-error">ターゲットのニーズを入力してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">ユーザーがサイトに訪れる動機 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="visit_motivation" placeholder="例：Google検索、SNSから、口コミ"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">ユーザーがサイトを利用するシーン <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="usage_scene" placeholder="例：通勤中のスマートフォン、会社でのPC利用"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== STEP 4: 競合・市場 ========== -->
+      <div class="section fade-in hidden" data-step="4">
+        <div class="bg-white rounded-2xl shadow-sm p-6 space-y-5">
+          <h2 class="text-lg font-bold text-gray-900 border-b pb-3">4. 競合・市場</h2>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">競合他社名①とURL <span class="text-red-500">*</span></label>
+            <input type="text" name="competitor1" required placeholder="例：〇〇株式会社 https://example.com"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <p class="field-error">競合他社①を入力してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">競合他社名②とURL <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="competitor2" placeholder="例：△△株式会社 https://example2.com"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">競合他社名③とURL <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="competitor3" placeholder="例：□□株式会社 https://example3.com"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">参考にしたいサイト（自社・他業界問わず） <span class="text-gray-400 text-xs">任意</span></label>
+            <textarea name="reference_sites" rows="2" placeholder="例：https://example.com ← デザインが好み&#10;https://example2.com ← コンテンツ構成が参考になる"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">競合との差別化ポイント <span class="text-red-500">*</span></label>
+            <textarea name="differentiation" required rows="3" placeholder="例：業界唯一の24時間対応サポート、価格の透明性"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"></textarea>
+            <p class="field-error">差別化ポイントを入力してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">自社の強み <span class="text-red-500">*</span></label>
+            <textarea name="strengths" required rows="3" placeholder="例：創業30年の実績、地域密着、アフターサポートの充実"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"></textarea>
+            <p class="field-error">自社の強みを入力してください</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== STEP 5: サイト構成・コンテンツ ========== -->
+      <div class="section fade-in hidden" data-step="5">
+        <div class="bg-white rounded-2xl shadow-sm p-6 space-y-5">
+          <h2 class="text-lg font-bold text-gray-900 border-b pb-3">5. サイト構成・コンテンツ</h2>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">必要なページ一覧 <span class="text-red-500">*</span></label>
+            <textarea name="required_pages" required rows="3" placeholder="例：トップ、会社概要、サービス紹介、料金、お問い合わせ、採用"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"></textarea>
+            <p class="field-error">必要なページを入力してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-3">必要な機能 <span class="text-red-500">*</span></label>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">問い合わせフォーム</span>
+                <div class="flex gap-2 pill-radio" data-required-group="feature_contact_form">
+                  <span><input type="radio" name="feature_contact_form" id="fcf_y" value="必要"><label for="fcf_y">必要</label></span>
+                  <span><input type="radio" name="feature_contact_form" id="fcf_n" value="不要"><label for="fcf_n">不要</label></span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">予約機能</span>
+                <div class="flex gap-2 pill-radio" data-required-group="feature_booking">
+                  <span><input type="radio" name="feature_booking" id="fb_y" value="必要"><label for="fb_y">必要</label></span>
+                  <span><input type="radio" name="feature_booking" id="fb_n" value="不要"><label for="fb_n">不要</label></span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">EC（ショッピング）</span>
+                <div class="flex gap-2 pill-radio" data-required-group="feature_ec">
+                  <span><input type="radio" name="feature_ec" id="fec_y" value="必要"><label for="fec_y">必要</label></span>
+                  <span><input type="radio" name="feature_ec" id="fec_n" value="不要"><label for="fec_n">不要</label></span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">会員機能</span>
+                <div class="flex gap-2 pill-radio" data-required-group="feature_member">
+                  <span><input type="radio" name="feature_member" id="fm_y" value="必要"><label for="fm_y">必要</label></span>
+                  <span><input type="radio" name="feature_member" id="fm_n" value="不要"><label for="fm_n">不要</label></span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">ブログ・お知らせ</span>
+                <div class="flex gap-2 pill-radio" data-required-group="feature_blog">
+                  <span><input type="radio" name="feature_blog" id="fbl_y" value="必要"><label for="fbl_y">必要</label></span>
+                  <span><input type="radio" name="feature_blog" id="fbl_n" value="不要"><label for="fbl_n">不要</label></span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">検索機能</span>
+                <div class="flex gap-2 pill-radio" data-required-group="feature_search">
+                  <span><input type="radio" name="feature_search" id="fs_y" value="必要"><label for="fs_y">必要</label></span>
+                  <span><input type="radio" name="feature_search" id="fs_n" value="不要"><label for="fs_n">不要</label></span>
+                </div>
+              </div>
+            </div>
+            <p class="group-error mt-2">すべての機能について必要/不要を選択してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">その他の必要な機能 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="feature_other" placeholder="例：多言語切替ボタン、チャットボット"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">多言語対応の有無 <span class="text-red-500">*</span></label>
+            <div class="flex gap-2 pill-radio" data-required-group="multilingual">
+              <span><input type="radio" name="multilingual" id="ml_y" value="有"><label for="ml_y">有</label></span>
+              <span><input type="radio" name="multilingual" id="ml_n" value="無"><label for="ml_n">無</label></span>
+            </div>
+            <p class="group-error">多言語対応の有無を選択してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">対応言語（多言語の場合） <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="languages" placeholder="例：英語、中国語（簡体字）"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">原稿の提供 <span class="text-red-500">*</span></label>
+              <div class="flex gap-2 pill-radio" data-required-group="manuscript_provision">
+                <span><input type="radio" name="manuscript_provision" id="mp_y" value="提供可"><label for="mp_y">提供可</label></span>
+                <span><input type="radio" name="manuscript_provision" id="mp_p" value="一部提供"><label for="mp_p">一部提供</label></span>
+                <span><input type="radio" name="manuscript_provision" id="mp_n" value="提供不可"><label for="mp_n">提供不可</label></span>
+              </div>
+              <p class="group-error">原稿の提供有無を選択してください</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">写真・画像の提供 <span class="text-red-500">*</span></label>
+              <div class="flex gap-2 pill-radio" data-required-group="photo_provision">
+                <span><input type="radio" name="photo_provision" id="pp_y" value="提供可"><label for="pp_y">提供可</label></span>
+                <span><input type="radio" name="photo_provision" id="pp_p" value="一部提供"><label for="pp_p">一部提供</label></span>
+                <span><input type="radio" name="photo_provision" id="pp_n" value="提供不可"><label for="pp_n">提供不可</label></span>
+              </div>
+              <p class="group-error">写真・画像の提供有無を選択してください</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">動画の提供 <span class="text-gray-400 text-xs">任意</span></label>
+              <div class="flex gap-2 pill-radio">
+                <span><input type="radio" name="video_provision" id="vp_y" value="提供可"><label for="vp_y">提供可</label></span>
+                <span><input type="radio" name="video_provision" id="vp_p" value="一部提供"><label for="vp_p">一部提供</label></span>
+                <span><input type="radio" name="video_provision" id="vp_n" value="提供不可"><label for="vp_n">提供不可</label></span>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">ロゴデータの有無 <span class="text-red-500">*</span></label>
+              <div class="flex gap-2 pill-radio" data-required-group="logo_exists">
+                <span><input type="radio" name="logo_exists" id="lg_y" value="有"><label for="lg_y">有</label></span>
+                <span><input type="radio" name="logo_exists" id="lg_n" value="無"><label for="lg_n">無</label></span>
+              </div>
+              <p class="group-error">ロゴデータの有無を選択してください</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">ブランドガイドラインの有無 <span class="text-gray-400 text-xs">任意</span></label>
+              <div class="flex gap-2 pill-radio">
+                <span><input type="radio" name="brand_guideline_exists" id="bg_y" value="有"><label for="bg_y">有</label></span>
+                <span><input type="radio" name="brand_guideline_exists" id="bg_n" value="無"><label for="bg_n">無</label></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== STEP 6: デザインの方向性 ========== -->
+      <div class="section fade-in hidden" data-step="6">
+        <div class="bg-white rounded-2xl shadow-sm p-6 space-y-5">
+          <h2 class="text-lg font-bold text-gray-900 border-b pb-3">6. デザインの方向性</h2>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">サイトの雰囲気・テイスト <span class="text-red-500">*</span>（複数選択可）</label>
+            <div class="flex flex-wrap gap-2 pill-check" data-required-group="design_taste">
+              <span><input type="checkbox" name="design_taste" id="dt_1" value="シンプル"><label for="dt_1">シンプル</label></span>
+              <span><input type="checkbox" name="design_taste" id="dt_2" value="モダン"><label for="dt_2">モダン</label></span>
+              <span><input type="checkbox" name="design_taste" id="dt_3" value="高級感"><label for="dt_3">高級感</label></span>
+              <span><input type="checkbox" name="design_taste" id="dt_4" value="ポップ"><label for="dt_4">ポップ</label></span>
+              <span><input type="checkbox" name="design_taste" id="dt_5" value="ナチュラル"><label for="dt_5">ナチュラル</label></span>
+              <span><input type="checkbox" name="design_taste" id="dt_6" value="プロフェッショナル"><label for="dt_6">プロフェッショナル</label></span>
+              <span><input type="checkbox" name="design_taste" id="dt_7" value="その他"><label for="dt_7">その他</label></span>
+            </div>
+            <p class="group-error">テイストを1つ以上選択してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">キーカラー <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="key_color" placeholder="例：ネイビー、#1E40AF"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">ブランドカラー <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="brand_color" placeholder="例：コーポレートカラーが赤（#E53E3E）"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">避けたい色 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="avoid_color" placeholder="例：ピンク、黄色"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">避けたいデザインの方向性 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="avoid_design" placeholder="例：派手すぎるアニメーション、古臭いデザイン"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">参考サイト（良い例）① <span class="text-gray-400 text-xs">任意</span></label>
+              <input type="url" name="ref_good1" placeholder="https://example.com"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">参考サイト（良い例）② <span class="text-gray-400 text-xs">任意</span></label>
+              <input type="url" name="ref_good2" placeholder="https://example.com"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">参考サイト（悪い例） <span class="text-gray-400 text-xs">任意</span></label>
+              <input type="url" name="ref_bad" placeholder="https://example.com"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== STEP 7: 技術要件 ========== -->
+      <div class="section fade-in hidden" data-step="7">
+        <div class="bg-white rounded-2xl shadow-sm p-6 space-y-5">
+          <h2 class="text-lg font-bold text-gray-900 border-b pb-3">7. 技術要件</h2>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-3">対応デバイス <span class="text-red-500">*</span></label>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">PC</span>
+                <div class="flex gap-2 pill-radio" data-required-group="device_pc">
+                  <span><input type="radio" name="device_pc" id="dpc_y" value="必要"><label for="dpc_y">必要</label></span>
+                  <span><input type="radio" name="device_pc" id="dpc_n" value="不要"><label for="dpc_n">不要</label></span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">スマートフォン</span>
+                <div class="flex gap-2 pill-radio" data-required-group="device_sp">
+                  <span><input type="radio" name="device_sp" id="dsp_y" value="必要"><label for="dsp_y">必要</label></span>
+                  <span><input type="radio" name="device_sp" id="dsp_n" value="不要"><label for="dsp_n">不要</label></span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">タブレット</span>
+                <div class="flex gap-2 pill-radio" data-required-group="device_tablet">
+                  <span><input type="radio" name="device_tablet" id="dtb_y" value="必要"><label for="dtb_y">必要</label></span>
+                  <span><input type="radio" name="device_tablet" id="dtb_n" value="不要"><label for="dtb_n">不要</label></span>
+                </div>
+              </div>
+            </div>
+            <p class="group-error mt-2">すべてのデバイスについて必要/不要を選択してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">対応ブラウザ <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="browsers" placeholder="例：Chrome, Safari, Firefox, Edge（最新版）"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">CMS導入の希望 <span class="text-red-500">*</span></label>
+            <div class="flex flex-wrap gap-2 pill-radio" data-required-group="cms_preference">
+              <span><input type="radio" name="cms_preference" id="cms_y" value="希望する"><label for="cms_y">希望する</label></span>
+              <span><input type="radio" name="cms_preference" id="cms_n" value="希望しない"><label for="cms_n">希望しない</label></span>
+              <span><input type="radio" name="cms_preference" id="cms_c" value="相談したい"><label for="cms_c">相談したい</label></span>
+            </div>
+            <p class="group-error">CMS希望有無を選択してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">希望CMS（WordPressなど） <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="cms_name" placeholder="例：WordPress、Shopify"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">既存サーバーの有無 <span class="text-red-500">*</span></label>
+              <div class="flex gap-2 pill-radio" data-required-group="server_exists">
+                <span><input type="radio" name="server_exists" id="sv_y" value="有"><label for="sv_y">有</label></span>
+                <span><input type="radio" name="server_exists" id="sv_n" value="無"><label for="sv_n">無</label></span>
+              </div>
+              <p class="group-error">既存サーバーの有無を選択してください</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">既存ドメインの有無 <span class="text-red-500">*</span></label>
+              <div class="flex gap-2 pill-radio" data-required-group="domain_exists">
+                <span><input type="radio" name="domain_exists" id="dm_y" value="有"><label for="dm_y">有</label></span>
+                <span><input type="radio" name="domain_exists" id="dm_n" value="無"><label for="dm_n">無</label></span>
+              </div>
+              <p class="group-error">既存ドメインの有無を選択してください</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">サーバー・ドメイン移管の必要性 <span class="text-gray-400 text-xs">任意</span></label>
+              <div class="flex gap-2 pill-radio">
+                <span><input type="radio" name="migration_needed" id="mg_y" value="有"><label for="mg_y">有</label></span>
+                <span><input type="radio" name="migration_needed" id="mg_n" value="無"><label for="mg_n">無</label></span>
+                <span><input type="radio" name="migration_needed" id="mg_u" value="不明"><label for="mg_u">不明</label></span>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">SSL対応の希望 <span class="text-red-500">*</span></label>
+              <div class="flex gap-2 pill-radio" data-required-group="ssl_preference">
+                <span><input type="radio" name="ssl_preference" id="ssl_y" value="希望する"><label for="ssl_y">希望する</label></span>
+                <span><input type="radio" name="ssl_preference" id="ssl_n" value="不要"><label for="ssl_n">不要</label></span>
+              </div>
+              <p class="group-error">SSL対応の希望を選択してください</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">GA4などアクセス解析ツールの導入 <span class="text-gray-400 text-xs">任意</span></label>
+              <div class="flex gap-2 pill-radio">
+                <span><input type="radio" name="analytics" id="an_y" value="希望する"><label for="an_y">希望する</label></span>
+                <span><input type="radio" name="analytics" id="an_n" value="不要"><label for="an_n">不要</label></span>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">SEO対策の希望 <span class="text-gray-400 text-xs">任意</span></label>
+              <div class="flex gap-2 pill-radio">
+                <span><input type="radio" name="seo" id="seo_y" value="希望する"><label for="seo_y">希望する</label></span>
+                <span><input type="radio" name="seo" id="seo_n" value="不要"><label for="seo_n">不要</label></span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">対策キーワード <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="seo_keywords" placeholder="例：東京 不動産 売却、マンション買取"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== STEP 8: 運用・保守 ========== -->
+      <div class="section fade-in hidden" data-step="8">
+        <div class="bg-white rounded-2xl shadow-sm p-6 space-y-5">
+          <h2 class="text-lg font-bold text-gray-900 border-b pb-3">8. 運用・保守</h2>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">公開後の更新体制 <span class="text-red-500">*</span></label>
+            <div class="flex flex-wrap gap-2 pill-radio" data-required-group="update_system">
+              <span><input type="radio" name="update_system" id="us_self" value="自社更新"><label for="us_self">自社更新</label></span>
+              <span><input type="radio" name="update_system" id="us_out" value="委託"><label for="us_out">委託</label></span>
+              <span><input type="radio" name="update_system" id="us_c" value="相談したい"><label for="us_c">相談したい</label></span>
+            </div>
+            <p class="group-error">更新体制を選択してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">更新頻度 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="update_frequency" placeholder="例：週1回、月2〜3回"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">主な更新箇所 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="update_areas" placeholder="例：ブログ記事、お知らせ、スタッフ情報"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">サーバー監視の希望 <span class="text-gray-400 text-xs">任意</span></label>
+              <div class="flex gap-2 pill-radio">
+                <span><input type="radio" name="server_monitoring" id="sm_y" value="希望する"><label for="sm_y">希望する</label></span>
+                <span><input type="radio" name="server_monitoring" id="sm_n" value="不要"><label for="sm_n">不要</label></span>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">バックアップ対応の希望 <span class="text-gray-400 text-xs">任意</span></label>
+              <div class="flex gap-2 pill-radio">
+                <span><input type="radio" name="backup" id="bk_y" value="希望する"><label for="bk_y">希望する</label></span>
+                <span><input type="radio" name="backup" id="bk_n" value="不要"><label for="bk_n">不要</label></span>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">修正対応の希望 <span class="text-gray-400 text-xs">任意</span></label>
+              <div class="flex gap-2 pill-radio">
+                <span><input type="radio" name="fix_support" id="fs2_y" value="希望する"><label for="fs2_y">希望する</label></span>
+                <span><input type="radio" name="fix_support" id="fs2_n" value="不要"><label for="fs2_n">不要</label></span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">想定する運用期間 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="operation_period" placeholder="例：3〜5年"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== STEP 9: 法的・セキュリティ要件 ========== -->
+      <div class="section fade-in hidden" data-step="9">
+        <div class="bg-white rounded-2xl shadow-sm p-6 space-y-5">
+          <h2 class="text-lg font-bold text-gray-900 border-b pb-3">9. 法的・セキュリティ要件</h2>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">プライバシーポリシーの有無 <span class="text-red-500">*</span></label>
+            <div class="flex flex-wrap gap-2 pill-radio" data-required-group="privacy_policy">
+              <span><input type="radio" name="privacy_policy" id="pp2_y" value="有"><label for="pp2_y">有</label></span>
+              <span><input type="radio" name="privacy_policy" id="pp2_n" value="無"><label for="pp2_n">無</label></span>
+              <span><input type="radio" name="privacy_policy" id="pp2_p" value="制作予定"><label for="pp2_p">制作予定</label></span>
+            </div>
+            <p class="group-error">プライバシーポリシーの有無を選択してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">利用規約の有無 <span class="text-red-500">*</span></label>
+            <div class="flex flex-wrap gap-2 pill-radio" data-required-group="terms_of_service">
+              <span><input type="radio" name="terms_of_service" id="tos_y" value="有"><label for="tos_y">有</label></span>
+              <span><input type="radio" name="terms_of_service" id="tos_n" value="無"><label for="tos_n">無</label></span>
+              <span><input type="radio" name="terms_of_service" id="tos_p" value="制作予定"><label for="tos_p">制作予定</label></span>
+            </div>
+            <p class="group-error">利用規約の有無を選択してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">個人情報の取り扱い方針 <span class="text-red-500">*</span></label>
+            <textarea name="personal_info_policy" required rows="3" placeholder="例：フォームで収集した情報は問い合わせ対応のみに使用し、第三者へ提供しない"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"></textarea>
+            <p class="field-error">個人情報の取り扱い方針を入力してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">業界特有の規制（薬機法・景表法など） <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="industry_regulations" placeholder="例：薬機法の規制あり、金融商品取引法の対象"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== STEP 10: スケジュール・予算 ========== -->
+      <div class="section fade-in hidden" data-step="10">
+        <div class="bg-white rounded-2xl shadow-sm p-6 space-y-5">
+          <h2 class="text-lg font-bold text-gray-900 border-b pb-3">10. スケジュール・予算</h2>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">公開希望日 <span class="text-red-500">*</span></label>
+            <input type="date" name="launch_date" required
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <p class="field-error">公開希望日を選択してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">絶対的な締切・理由（イベント連動など） <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="hard_deadline" placeholder="例：2025年4月1日・新サービス開始に合わせる"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">予算の上限 <span class="text-red-500">*</span></label>
+            <input type="text" name="budget" required placeholder="例：50万円〜100万円"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <p class="field-error">予算の上限を入力してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">社内承認フロー <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="approval_flow" placeholder="例：担当者→部長→役員の3段階承認"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">確認・返答に要する期間 <span class="text-gray-400 text-xs">任意</span></label>
+            <input type="text" name="response_time" placeholder="例：3営業日以内"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">希望する連絡手段 <span class="text-red-500">*</span>（複数選択可）</label>
+            <div class="flex flex-wrap gap-2 pill-check" data-required-group="contact_method">
+              <span><input type="checkbox" name="contact_method" id="cm_mail" value="メール"><label for="cm_mail">メール</label></span>
+              <span><input type="checkbox" name="contact_method" id="cm_chat" value="チャット"><label for="cm_chat">チャット</label></span>
+              <span><input type="checkbox" name="contact_method" id="cm_tel" value="電話"><label for="cm_tel">電話</label></span>
+            </div>
+            <p class="group-error">連絡手段を1つ以上選択してください</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">定例MTGの希望 <span class="text-gray-400 text-xs">任意</span></label>
+            <div class="flex gap-2 pill-radio">
+              <span><input type="radio" name="regular_meeting" id="rm_y" value="希望する"><label for="rm_y">希望する</label></span>
+              <span><input type="radio" name="regular_meeting" id="rm_n" value="不要"><label for="rm_n">不要</label></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ナビゲーションボタン -->
+      <div class="flex justify-between mt-6">
+        <button type="button" id="btn-prev"
+          class="hidden px-6 py-3 rounded-xl border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors">
+          ← 前へ
+        </button>
+        <div class="flex-1"></div>
+        <button type="button" id="btn-next"
+          class="px-8 py-3 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors">
+          次へ →
+        </button>
+        <button type="submit" id="btn-submit"
+          class="hidden px-8 py-3 rounded-xl bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors">
+          送信する ✓
+        </button>
+      </div>
+
+    </form>
+
+    <!-- 送信結果メッセージ -->
+    <div id="result-message" class="hidden mt-6">
+      <div id="result-success" class="hidden bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
+        <div class="text-5xl mb-4">✅</div>
+        <h3 class="text-xl font-bold text-green-800 mb-2">送信が完了しました</h3>
+        <p class="text-green-700 text-sm">ヒアリング情報を受け付けました。<br>内容を確認次第、ご連絡いたします。</p>
+      </div>
+      <div id="result-error" class="hidden bg-red-50 border border-red-200 rounded-2xl p-8 text-center">
+        <div class="text-5xl mb-4">⚠️</div>
+        <h3 class="text-xl font-bold text-red-800 mb-2">送信に失敗しました</h3>
+        <p id="error-detail" class="text-red-700 text-sm mb-4"></p>
+        <button onclick="retrySubmit()" class="px-6 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700">再送信する</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ========== 設定 ==========
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyfpVCBEz_OdVlLBoVfx_dJZFzJxIxAYOsxUTntwjxqCyViMYk3GtxVQeY2aTFdLFZn/exec";
+
+    const STEP_TITLES = [
+      "", // 0 は使わない
+      "基本情報",
+      "プロジェクトの目的・ゴール",
+      "ターゲット",
+      "競合・市場",
+      "サイト構成・コンテンツ",
+      "デザインの方向性",
+      "技術要件",
+      "運用・保守",
+      "法的・セキュリティ要件",
+      "スケジュール・予算"
+    ];
+    const TOTAL_STEPS = 10;
+    let currentStep = 1;
+
+    // ========== ステップ移動 ==========
+    function goToStep(step) {
+      document.querySelectorAll(".section").forEach(s => {
+        s.classList.add("hidden");
+        s.classList.remove("fade-in");
+      });
+      const target = document.querySelector(`.section[data-step="${step}"]`);
+      target.classList.remove("hidden");
+      setTimeout(() => target.classList.add("fade-in"), 10);
+
+      const pct = Math.round((step / TOTAL_STEPS) * 100);
+      document.getElementById("progress-bar").style.width = pct + "%";
+      document.getElementById("step-label").textContent = `ステップ ${step} / ${TOTAL_STEPS}：${STEP_TITLES[step]}`;
+      document.getElementById("step-pct").textContent = pct + "%";
+
+      document.getElementById("btn-prev").classList.toggle("hidden", step === 1);
+      document.getElementById("btn-next").classList.toggle("hidden", step === TOTAL_STEPS);
+      document.getElementById("btn-submit").classList.toggle("hidden", step !== TOTAL_STEPS);
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      currentStep = step;
+    }
+
+    // ========== バリデーション ==========
+    function validateStep(step) {
+      const section = document.querySelector(`.section[data-step="${step}"]`);
+      let valid = true;
+
+      // テキスト・メール・URL・textarea の required チェック
+      section.querySelectorAll("input[required], textarea[required]").forEach(el => {
+        const err = el.parentElement.querySelector(".field-error");
+        if (!el.value.trim()) {
+          el.classList.add("error");
+          if (err) err.classList.add("show");
+          valid = false;
+        } else if (el.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value)) {
+          el.classList.add("error");
+          if (err) err.classList.add("show");
+          valid = false;
+        } else {
+          el.classList.remove("error");
+          if (err) err.classList.remove("show");
+        }
+      });
+
+      // radio/checkbox グループの required チェック
+      section.querySelectorAll("[data-required-group]").forEach(group => {
+        const name = group.getAttribute("data-required-group");
+        const checked = group.querySelectorAll(`input[name="${name}"]:checked`).length;
+        const err = group.parentElement.querySelector(".group-error");
+
+        // 必要なグループかどうかは data-required-group が付いているかで判断
+        // pill-radio / pill-check 両方対応
+        if (checked === 0) {
+          if (err) err.classList.add("show");
+          valid = false;
+        } else {
+          if (err) err.classList.remove("show");
+        }
+      });
+
+      return valid;
+    }
+
+    // ========== フォームデータ収集 ==========
+    function collectFormData() {
+      const form = document.getElementById("intake-form");
+      const data = {};
+
+      // テキスト系
+      form.querySelectorAll("input:not([type=radio]):not([type=checkbox]), textarea").forEach(el => {
+        if (el.name) data[el.name] = el.value.trim() || null;
+      });
+
+      // radio
+      form.querySelectorAll("input[type=radio]:checked").forEach(el => {
+        data[el.name] = el.value;
+      });
+
+      // checkbox（複数値は配列）
+      const checkGroups = {};
+      form.querySelectorAll("input[type=checkbox]").forEach(el => {
+        if (!checkGroups[el.name]) checkGroups[el.name] = [];
+        if (el.checked) checkGroups[el.name].push(el.value);
+      });
+      Object.assign(data, checkGroups);
+
+      return data;
+    }
+
+    // ========== 送信 ==========
+    let lastFormData = null;
+
+    async function submitForm() {
+      const data = collectFormData();
+      lastFormData = data;
+
+      document.getElementById("btn-submit").disabled = true;
+      document.getElementById("btn-submit").textContent = "送信中...";
+
+      try {
+        const body = "data=" + encodeURIComponent(JSON.stringify(data));
+        const res = await fetch(GAS_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: body
+        });
+        const json = await res.json();
+
+        document.getElementById("intake-form").classList.add("hidden");
+        document.querySelector(".sticky").classList.add("hidden");
+        document.getElementById("result-message").classList.remove("hidden");
+
+        if (json.success) {
+          document.getElementById("result-success").classList.remove("hidden");
+        } else {
+          document.getElementById("result-error").classList.remove("hidden");
+          document.getElementById("error-detail").textContent = json.error || "不明なエラーが発生しました";
+        }
+      } catch (err) {
+        document.getElementById("intake-form").classList.add("hidden");
+        document.querySelector(".sticky").classList.add("hidden");
+        document.getElementById("result-message").classList.remove("hidden");
+        document.getElementById("result-error").classList.remove("hidden");
+        document.getElementById("error-detail").textContent = "ネットワークエラー: " + err.message;
+      }
+    }
+
+    function retrySubmit() {
+      document.getElementById("intake-form").classList.remove("hidden");
+      document.querySelector(".sticky").classList.remove("hidden");
+      document.getElementById("result-message").classList.add("hidden");
+      document.getElementById("result-success").classList.add("hidden");
+      document.getElementById("result-error").classList.add("hidden");
+      document.getElementById("btn-submit").disabled = false;
+      document.getElementById("btn-submit").textContent = "送信する ✓";
+      goToStep(TOTAL_STEPS);
+    }
+
+    // ========== イベントリスナー ==========
+    document.getElementById("btn-next").addEventListener("click", () => {
+      if (validateStep(currentStep)) goToStep(currentStep + 1);
+    });
+
+    document.getElementById("btn-prev").addEventListener("click", () => {
+      goToStep(currentStep - 1);
+    });
+
+    document.getElementById("intake-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (validateStep(currentStep)) submitForm();
+    });
+
+    // エラー表示をリセット（入力開始時）
+    document.getElementById("intake-form").addEventListener("input", (e) => {
+      if (e.target.classList.contains("error")) {
+        e.target.classList.remove("error");
+        const err = e.target.parentElement.querySelector(".field-error");
+        if (err) err.classList.remove("show");
+      }
+    });
+    document.getElementById("intake-form").addEventListener("change", (e) => {
+      if (e.target.type === "radio" || e.target.type === "checkbox") {
+        const group = e.target.closest("[data-required-group]");
+        if (group) {
+          const err = group.parentElement.querySelector(".group-error");
+          if (err) err.classList.remove("show");
+        }
+      }
+    });
+
+    // 初期表示
+    goToStep(1);
+  </script>
+</body>
+</html>
